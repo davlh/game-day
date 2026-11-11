@@ -5,7 +5,7 @@
   const $ = s => document.querySelector(s);
 
   const STORE_KEY = "gameday.settings.v1";
-  const settings = Object.assign({ shortcutId: "", tab: "mine", collegeAll: false, tvIndex: 0 }, readStore());
+  const settings = Object.assign({ shortcutId: "", tab: "mine", collegeAll: false, hideBlackout: false, tvIndex: 0 }, readStore());
   if (!Array.isArray(settings.tvs) || !settings.tvs.length) settings.tvs = (cfg.TVS || []).map(t => Object.assign({}, t));
   if (!(settings.tvIndex < settings.tvs.length)) settings.tvIndex = 0;
   const currentTv = () => settings.tvs[settings.tvIndex] || { name: "TV", ip: "" };
@@ -104,18 +104,24 @@
                  : esc(timeStr(g.date));
     const nets = g.networks.map(n => esc(n.name)).join(" · ") || "TBD";
     const leagueTag = state.tab === "mine" ? `<span class="ltag">${esc(cfg.LEAGUES[g.league].label)}</span>` : "";
-    return `<button class="card${g.favorite ? " fav" : ""}${g.state === "in" ? " is-live" : ""}" data-idx="${idx}">
+    const blocked = g.access.status === "blackout";
+    return `<button class="card${g.favorite ? " fav" : ""}${g.state === "in" ? " is-live" : ""}${blocked ? " blocked" : ""}" data-idx="${idx}">
       <div class="status">${leagueTag}${status}${g.favorite ? '<span class="star" aria-label="favorite">★</span>' : ""}</div>
       ${teamRow(g.away, g)}${teamRow(g.home, g)}
       <div class="where"><span class="nets">${nets}</span><span class="target">▶ ${esc(g.label)}</span></div>
+      ${blocked ? `<div class="why">Likely blacked out here · ${esc(g.access.reason)}</div>` : ""}
     </button>`;
   }
+
+  // Blacked-out games the "Hide blacked out" chip would hide (favorites are always shown).
+  const hideable = g => !g.favorite && g.access.status === "blackout";
 
   function visibleGames() {
     let games = state.games;
     if (state.tab !== "mine" && cfg.LEAGUES[state.tab].college && !settings.collegeAll) {
       games = games.filter(L.isFeatured);
     }
+    if (state.tab !== "mine" && settings.hideBlackout) games = games.filter(g => !hideable(g));
     return state.tab === "mine"
       ? games.slice().sort((a, b) => ((a.state === "in" ? 0 : 1) - (b.state === "in" ? 0 : 1)) || (Date.parse(a.date) - Date.parse(b.date)))
       : L.sortGames(games);
@@ -140,10 +146,15 @@
     if (isLeague) {
       sub += `<div class="days">` + [-1, 0, 1, 2, 3, 4, 5, 6].map(o =>
         `<button class="day${state.dayOffset === o ? " on" : ""}" data-day="${o}">${dayLabel(dayAt(o), o)}</button>`).join("") + `</div>`;
-      if (cfg.LEAGUES[state.tab].college) {
-        sub += `<div class="filter"><button class="chip${!settings.collegeAll ? " on" : ""}" data-college="0">Top 25 · TV · Faves</button>` +
-               `<button class="chip${settings.collegeAll ? " on" : ""}" data-college="1">All games</button></div>`;
+      const college = cfg.LEAGUES[state.tab].college;
+      const pool = college && !settings.collegeAll ? state.games.filter(L.isFeatured) : state.games;
+      const nBlack = pool.filter(hideable).length;
+      sub += `<div class="filter">`;
+      if (college) {
+        sub += `<button class="chip${!settings.collegeAll ? " on" : ""}" data-college="0">Top 25 · TV · Faves</button>` +
+               `<button class="chip${settings.collegeAll ? " on" : ""}" data-college="1">All games</button>`;
       }
+      sub += `<button class="chip${settings.hideBlackout ? " on" : ""}" data-hideblk>Hide blacked out${nBlack ? " (" + nBlack + ")" : ""}</button></div>`;
     }
     $("#sub").innerHTML = sub;
 
@@ -182,7 +193,7 @@
     const tv = currentTv();
     if (!settings.shortcutId) { openSettings(); return; }
     if (!tv.ip) { openSettings("Add the Roku address for “" + tv.name + "” first."); return; }
-    toast("Sending " + g.away.abbr + " @ " + g.home.abbr + " to " + tv.name + " → " + g.label);
+    toast((g.access.status === "blackout" ? "Trying anyway: " : "Sending ") + g.away.abbr + " @ " + g.home.abbr + " to " + tv.name + " → " + g.label);
     window.location.href = L.playLink(settings.shortcutId, g, tv);
   }
 
@@ -200,6 +211,7 @@
     if (day) { state.dayOffset = parseInt(day.dataset.day, 10); state.games = []; load(); return; }
     const col = e.target.closest("[data-college]");
     if (col) { settings.collegeAll = col.dataset.college === "1"; saveStore(); render(); return; }
+    if (e.target.closest("[data-hideblk]")) { settings.hideBlackout = !settings.hideBlackout; saveStore(); render(); return; }
     const c = e.target.closest(".card");
     if (c) { play(state.shown[parseInt(c.dataset.idx, 10)]); return; }
     if (e.target.closest("[data-open-settings]")) { e.preventDefault(); openSettings(); }

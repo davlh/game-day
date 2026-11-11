@@ -52,6 +52,7 @@ Edit files on GitHub (for example `config.js`, using the pencil icon). The phone
 ## Common changes
 - **Add a favorite team:** add a line to `FAVORITES` in `config.js`. Use the team's ESPN `id` (the number in its espn.com team URL) and `abbr`.
 - **Prefer an app over DirecTV for a network:** reorder that network's line in `ROUTES`. For example, put `app("FOX One")` before the DirecTV entry.
+- **A game says "Likely blacked out here" but you can watch it:** add the channel to `HOME_MARKET.networks` (or the team to `HOME_MARKET.teams`) in `config.js`. The label is only a hint, and tapping the game still tries to play it.
 - **A network shows "▶ DIRECTV" but no channel:** it isn't mapped yet. Add it to `ROUTES` (and `ALIASES` if ESPN uses a different name).
 
 ## Security notes

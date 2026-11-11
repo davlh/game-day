@@ -65,6 +65,16 @@ After any UI change, run `npm run shots` and **look at the PNGs** before pushing
 for all of a game's networks (national first) and de-duplicates them. Play on TV launches the
 **first app actually installed** on the selected TV. Unknown networks → `FALLBACK` (DirecTV app).
 
+### Availability / blackouts (informational only)
+`availability(game, cfg)` in logic.js sets `game.access = {status, reason}` using `HOME_MARKET` in config.js:
+- `ok`: any national broadcast, a broadcast on a `HOME_MARKET.networks` channel (NBCS-BA/CA), or a
+  Home/Away broadcast whose team is in `HOME_MARKET.teams[league]`.
+- `blackout`: only other markets' local channels (e.g. CHSN for a Bulls home game).
+- `unknown`: no listing. Fails open: if the team for a local broadcast can't be determined, it counts as ok.
+- **Never block playback on this.** It dims the card, adds a reason line, and powers the
+  "Hide blacked out" chip on league tabs (favorites are never hidden). The plan and tap behave the same.
+- Not handled yet: NFL regional FOX/CBS Sunday windows (look national in ESPN data), streaming subscriptions.
+
 ### DirecTV deep links (verified working)
 - Roku app name `DIRECTV`, Roku app id `161227` on the home TV.
 - `launch/161227?contentId=<channel resourceId>&mediaType=live` tunes straight to the channel.

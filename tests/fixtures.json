@@ -571,6 +571,394 @@
       ]
      }
     ]
+   },
+   {
+    "id": "201",
+    "date": "2026-11-16T01:00Z",
+    "shortName": "MIA @ CHI",
+    "status": {
+     "type": {
+      "state": "pre",
+      "shortDetail": "",
+      "completed": false
+     }
+    },
+    "competitions": [
+     {
+      "competitors": [
+       {
+        "homeAway": "home",
+        "score": "0",
+        "team": {
+         "id": "4",
+         "abbreviation": "CHI",
+         "displayName": "Bulls",
+         "shortDisplayName": "Bulls",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/chi.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "6-2"
+         }
+        ]
+       },
+       {
+        "homeAway": "away",
+        "score": "0",
+        "team": {
+         "id": "14",
+         "abbreviation": "MIA",
+         "displayName": "Heat",
+         "shortDisplayName": "Heat",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/mia.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "4-4"
+         }
+        ]
+       }
+      ],
+      "broadcasts": [
+       {
+        "market": "national",
+        "names": []
+       },
+       {
+        "market": "home",
+        "names": [
+         "CHSN"
+        ]
+       },
+       {
+        "market": "away",
+        "names": [
+         "FanDuel SN SUN"
+        ]
+       }
+      ],
+      "geoBroadcasts": [
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Home"
+        },
+        "media": {
+         "shortName": "CHSN"
+        }
+       },
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Away"
+        },
+        "media": {
+         "shortName": "FanDuel SN SUN"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "202",
+    "date": "2026-11-16T01:30Z",
+    "shortName": "PHI @ CHI",
+    "status": {
+     "type": {
+      "state": "pre",
+      "shortDetail": "",
+      "completed": false
+     }
+    },
+    "competitions": [
+     {
+      "competitors": [
+       {
+        "homeAway": "home",
+        "score": "0",
+        "team": {
+         "id": "4",
+         "abbreviation": "CHI",
+         "displayName": "Bulls",
+         "shortDisplayName": "Bulls",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/chi.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "6-2"
+         }
+        ]
+       },
+       {
+        "homeAway": "away",
+        "score": "0",
+        "team": {
+         "id": "20",
+         "abbreviation": "PHI",
+         "displayName": "76ers",
+         "shortDisplayName": "76ers",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/phi.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "4-4"
+         }
+        ]
+       }
+      ],
+      "broadcasts": [
+       {
+        "market": "national",
+        "names": [
+         "NBA TV"
+        ]
+       },
+       {
+        "market": "home",
+        "names": [
+         "CHSN"
+        ]
+       }
+      ],
+      "geoBroadcasts": [
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Home"
+        },
+        "media": {
+         "shortName": "CHSN"
+        }
+       },
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "National"
+        },
+        "media": {
+         "shortName": "NBA TV"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "203",
+    "date": "2026-11-16T03:00Z",
+    "shortName": "DEN @ SAC",
+    "status": {
+     "type": {
+      "state": "pre",
+      "shortDetail": "",
+      "completed": false
+     }
+    },
+    "competitions": [
+     {
+      "competitors": [
+       {
+        "homeAway": "home",
+        "score": "0",
+        "team": {
+         "id": "23",
+         "abbreviation": "SAC",
+         "displayName": "Kings",
+         "shortDisplayName": "Kings",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/sac.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "6-2"
+         }
+        ]
+       },
+       {
+        "homeAway": "away",
+        "score": "0",
+        "team": {
+         "id": "7",
+         "abbreviation": "DEN",
+         "displayName": "Nuggets",
+         "shortDisplayName": "Nuggets",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/den.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "4-4"
+         }
+        ]
+       }
+      ],
+      "broadcasts": [
+       {
+        "market": "national",
+        "names": []
+       },
+       {
+        "market": "home",
+        "names": [
+         "NBCS-CA"
+        ]
+       },
+       {
+        "market": "away",
+        "names": [
+         "Altitude"
+        ]
+       }
+      ],
+      "geoBroadcasts": [
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Home"
+        },
+        "media": {
+         "shortName": "NBCS-CA"
+        }
+       },
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Away"
+        },
+        "media": {
+         "shortName": "Altitude"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "id": "204",
+    "date": "2026-11-16T03:30Z",
+    "shortName": "GS @ POR",
+    "status": {
+     "type": {
+      "state": "pre",
+      "shortDetail": "",
+      "completed": false
+     }
+    },
+    "competitions": [
+     {
+      "competitors": [
+       {
+        "homeAway": "home",
+        "score": "0",
+        "team": {
+         "id": "22",
+         "abbreviation": "POR",
+         "displayName": "Trail Blazers",
+         "shortDisplayName": "Trail Blazers",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/por.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "6-2"
+         }
+        ]
+       },
+       {
+        "homeAway": "away",
+        "score": "0",
+        "team": {
+         "id": "9",
+         "abbreviation": "GS",
+         "displayName": "Warriors",
+         "shortDisplayName": "Warriors",
+         "logo": "https://a.espncdn.com/i/teamlogos/x/gs.png"
+        },
+        "curatedRank": {
+         "current": 99
+        },
+        "records": [
+         {
+          "summary": "4-4"
+         }
+        ]
+       }
+      ],
+      "broadcasts": [
+       {
+        "market": "national",
+        "names": []
+       },
+       {
+        "market": "home",
+        "names": [
+         "Rip City TV"
+        ]
+       },
+       {
+        "market": "away",
+        "names": [
+         "KPIX"
+        ]
+       }
+      ],
+      "geoBroadcasts": [
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Home"
+        },
+        "media": {
+         "shortName": "Rip City TV"
+        }
+       },
+       {
+        "type": {
+         "shortName": "TV"
+        },
+        "market": {
+         "type": "Away"
+        },
+        "media": {
+         "shortName": "KPIX"
+        }
+       }
+      ]
+     }
+    ]
    }
   ]
  },

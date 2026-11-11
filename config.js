@@ -99,6 +99,21 @@ const FAVORITES = [
   { league: "cbb", id: "24", abbr: "STAN", name: "Stanford" },
 ];
 
+// Your TV market, used only to mark games that are probably blacked out here.
+// It never stops a game from playing.
+//  networks: regional sports networks you get (a local broadcast on these is watchable)
+//  teams:    home-market teams (their local broadcasts are watchable), by ESPN abbreviation
+const HOME_MARKET = {
+  name: "Bay Area",
+  networks: ["NBCS-BA", "NBCS-CA"],
+  teams: {
+    nfl: ["SF"],
+    nba: ["GS"],
+    cfb: ["STAN", "CAL", "SJSU"],
+    cbb: ["STAN", "CAL", "SJSU", "SCU", "SMC", "USF"],
+  },
+};
+
 // TVs you can send games to (pick one in the app's header). These are just the
 // starting list — you can edit names/addresses in the app under ⚙ Settings.
 // Roku IP: Roku Settings → Network → About. Leave ip "" until you know it.
@@ -114,5 +129,5 @@ const LEAGUES = {
   cbb: { label: "CBB", path: "basketball/mens-college-basketball", params: "groups=50&limit=500", college: true },
 };
 
-const GAME_DAY_CONFIG = { DTV, ROUTES, ALIASES, FALLBACK, FAVORITES, LEAGUES, TVS };
+const GAME_DAY_CONFIG = { DTV, ROUTES, ALIASES, FALLBACK, FAVORITES, LEAGUES, TVS, HOME_MARKET };
 if (typeof module !== "undefined") module.exports = GAME_DAY_CONFIG;

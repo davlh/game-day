@@ -15,24 +15,33 @@
     return null;
   }
 
+  // ESPN market type → "national" | "home" | "away" | "" (unknown).
+  function marketOf(s) {
+    const m = String(s || "").toLowerCase();
+    return m === "national" || m === "home" || m === "away" ? m : "";
+  }
+
   // Networks for a game, national first, de-duplicated.
+  // Each: { name, key (ROUTES key or null), national, market }.
   function gameNetworks(comp, cfg) {
     const out = [];
     const seen = {};
-    const add = (name, national) => {
+    const add = (name, market) => {
       const k = norm(name);
       if (!k) return;
-      if (seen[k]) { if (national) seen[k].national = true; return; }
-      seen[k] = { name: String(name), key: canonicalNetwork(name, cfg), national: !!national };
+      const national = market === "national";
+      if (seen[k]) {
+        if (national) seen[k].national = true;
+        if (!seen[k].market) seen[k].market = market;
+        return;
+      }
+      seen[k] = { name: String(name), key: canonicalNetwork(name, cfg), national, market };
       out.push(seen[k]);
     };
-    (comp.geoBroadcasts || []).forEach(g => {
-      const mkt = ((g.market || {}).type || "").toLowerCase();
-      add((g.media || {}).shortName, mkt === "national");
-    });
+    (comp.geoBroadcasts || []).forEach(g => add((g.media || {}).shortName, marketOf((g.market || {}).type)));
     (comp.broadcasts || []).forEach(b => {
-      const national = String(b.market || "").toLowerCase() === "national";
-      (b.names || []).forEach(n => add(n, national));
+      const market = marketOf(b.market);
+      (b.names || []).forEach(n => add(n, market));
     });
     return out.filter(x => x.national).concat(out.filter(x => !x.national));
   }
@@ -68,6 +77,32 @@
       ((f.id && String(team.id) === String(f.id)) || (f.abbr && team.abbr === f.abbr)));
   }
 
+  // Can this game be watched in your TV market? Informational only: it never changes
+  // the play plan, and tapping a "blackout" game still tries to play it.
+  //   ok       – on a national broadcast, a home-market channel, or a home-market team's local TV
+  //   blackout – only on other markets' local channels (e.g. CHSN for a Bulls home game)
+  //   unknown  – no TV listing yet
+  // Fails open: a local broadcast whose team we can't tell counts as ok.
+  function availability(game, cfg) {
+    const hm = cfg.HOME_MARKET || {};
+    const localNets = (hm.networks || []).map(norm);
+    const localTeams = (hm.teams || {})[game.league] || [];
+    const foreign = [];
+    let ok = false;
+    game.networks.forEach(n => {
+      if (n.national || localNets.includes(norm(n.key || n.name))) { ok = true; return; }
+      const team = n.market === "home" ? game.home : n.market === "away" ? game.away : null;
+      if (!team || localTeams.includes(team.abbr)) { ok = true; return; }
+      foreign.push(n.name + " (" + team.abbr + ")");
+    });
+    if (ok) return { status: "ok", reason: "" };
+    if (foreign.length) {
+      return { status: "blackout",
+               reason: foreign.join(", ") + (foreign.length > 1 ? " are" : " is") + " local TV only" };
+    }
+    return { status: "unknown", reason: "No TV listing yet" };
+  }
+
   function parseTeam(c) {
     const t = c.team || {};
     const rank = ((c.curatedRank || {}).current) || 99;
@@ -90,7 +125,7 @@
     const plan = planFor(networks, cfg);
     const away = side.away || parseTeam({});
     const home = side.home || parseTeam({});
-    return {
+    const game = {
       id: String(ev.id), league, date: ev.date, name: ev.shortName || ev.name || "",
       state: st.state || "pre", detail: st.shortDetail || st.detail || "", completed: !!st.completed,
       away, home, networks, plan, label: planLabel(plan),
@@ -100,6 +135,8 @@
       onTv: plan.some(p => p.contentId),   // on a real TV channel you get (has a DirecTV channel)
       neutral: !!comp.neutralSite,
     };
+    game.access = availability(game, cfg);
+    return game;
   }
 
   // For the college "Featured" view: favorites, ranked teams, games on a TV channel you get.
@@ -171,7 +208,7 @@
     return "http-shortcuts://" + shortcutId + "?plan=" + encodeURIComponent(JSON.stringify(payload));
   }
 
-  const api = { norm, canonicalNetwork, gameNetworks, planFor, planLabel, isFavorite, parseEvent,
+  const api = { norm, canonicalNetwork, gameNetworks, planFor, planLabel, isFavorite, parseEvent, availability,
                 isFeatured, sortGames, ymd, scoreboardUrl, extractShortcutId, playLink,
                 isPrivateIp, parseTvList, formatTvList };
   if (typeof module !== "undefined") module.exports = api;

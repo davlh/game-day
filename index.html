@@ -11,7 +11,7 @@
 <style>
   :root {
     --bg: #0d1117; --panel: #161b22; --panel2: #1c232c; --line: #2a323d;
-    --text: #e6edf3; --muted: #8b96a3; --accent: #3ddc84; --live: #ff4d4f; --fav: #f5c542;
+    --text: #e6edf3; --muted: #8b96a3; --accent: #3ddc84; --live: #ff4d4f; --fav: #f5c542; --warn: #e8a65d;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   html, body { margin: 0; background: var(--bg); color: var(--text);
@@ -60,6 +60,9 @@
   .where { display: flex; align-items: center; gap: 8px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line); font-size: 12px; }
   .nets { color: var(--muted); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .target { color: var(--accent); font-weight: 600; white-space: nowrap; }
+  /* Likely blacked out: dimmed but still tappable (purely informational). */
+  .card.blocked .team, .card.blocked .where { opacity: .5; }
+  .why { color: var(--warn); font-size: 12px; margin-top: 6px; }
   .empty, .notice { text-align: center; color: var(--muted); padding: 40px 16px; }
   .notice { padding: 12px; margin-top: 12px; background: var(--panel); border: 1px dashed var(--line); border-radius: 12px; }
   .notice a { color: var(--accent); }
